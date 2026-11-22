@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
 import { rupiah, waLink } from "@/lib/wa";
+import { useCart } from "./CartProvider";
 
 export default function Catalog({ products, categories, wa, template }) {
   const [cat, setCat] = useState("all");
+  const { add, items } = useCart();
   const list = cat === "all" ? products : products.filter((p) => p.category_id === cat);
   const tab = (on) => `rounded-full border px-4 py-1.5 text-sm font-medium ${on ? "border-brand bg-brand text-white" : "border-line bg-white hover:border-gold"}`;
 
@@ -18,6 +20,7 @@ export default function Catalog({ products, categories, wa, template }) {
         {list.map((p) => {
           const sale = p.original_price > p.price;
           const sold = p.stock_status === "habis";
+          const inCart = items.find((x) => x.id === p.id)?.qty;
           return (
             <article key={p.id} className="flex flex-col overflow-hidden rounded-xl border border-line bg-white">
               <div className="relative aspect-square bg-line/40">
@@ -34,8 +37,12 @@ export default function Catalog({ products, categories, wa, template }) {
                 {sold ? (
                   <span className="mt-3 rounded-md bg-line py-2 text-center text-sm font-semibold text-ink/50">Stok habis</span>
                 ) : (
-                  <a href={waLink(wa, template, p)} target="_blank" rel="noopener noreferrer"
-                    className="mt-3 rounded-md bg-brand py-2 text-center text-sm font-semibold text-white hover:bg-brand-dark">Beli via WhatsApp</a>
+                  <>
+                    <button onClick={() => add(p)} className="mt-3 rounded-md bg-brand py-2 text-sm font-semibold text-white hover:bg-brand-dark">
+                      {inCart ? `Di keranjang (${inCart}) · Tambah` : "Tambah ke keranjang"}
+                    </button>
+                    <a href={waLink(wa, template, p)} target="_blank" rel="noopener noreferrer" className="mt-2 text-center text-xs text-ink/60 underline">Beli langsung via WhatsApp</a>
+                  </>
                 )}
               </div>
             </article>

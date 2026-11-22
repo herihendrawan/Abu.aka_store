@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@theme {
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-heading: var(--font-amiri), Georgia, serif;
+  --color-ink: #16282a;
+  --color-paper: #f4f8f6;
+  --color-line: #d9e4df;
+  --color-brand: #14584f;
+  --color-brand-dark: #0d3b36;
+  --color-emerald-deep: #0d3b36;
+  --color-gold: #c9a14a;
+  --color-gold-soft: #ecdcae;
+}
+body { background: var(--color-paper); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+.pola {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%23c9a14a' stroke-opacity='.28'%3E%3Crect x='16' y='16' width='48' height='48'/%3E%3Crect x='16' y='16' width='48' height='48' transform='rotate(45 40 40)'/%3E%3C/g%3E%3C/svg%3E");
+}

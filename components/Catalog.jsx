@@ -7,11 +7,11 @@ export default function Catalog({ products, categories, wa, template }) {
   const [cat, setCat] = useState("all");
   const { add, items } = useCart();
   const list = cat === "all" ? products : products.filter((p) => p.category_id === cat);
-  const tab = (on) => `rounded-full border px-4 py-1.5 text-sm font-medium ${on ? "border-brand bg-brand text-white" : "border-line bg-white hover:border-gold"}`;
+  const tab = (on) => `shrink-0 whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-medium ${on ? "border-brand bg-brand text-white" : "border-line bg-white hover:border-gold"}`;
 
   return (
     <>
-      <div className="mb-8 flex flex-wrap gap-2">
+      <div className="-mx-5 mb-8 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:flex-wrap md:px-0">
         <button onClick={() => setCat("all")} className={tab(cat === "all")}>Semua</button>
         {categories.map((c) => <button key={c.id} onClick={() => setCat(c.id)} className={tab(cat === c.id)}>{c.name}</button>)}
       </div>
@@ -23,14 +23,14 @@ export default function Catalog({ products, categories, wa, template }) {
           const inCart = items.find((x) => x.id === p.id)?.qty;
           return (
             <article key={p.id} className="flex flex-col overflow-hidden rounded-xl border border-line bg-white">
-              <div className="relative aspect-square bg-line/40">
+              <div className="relative aspect-square bg-white">
                 {p.image_url && <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full object-cover" />}
                 {sale && <span className="absolute left-2 top-2 rounded bg-gold px-2 py-0.5 text-xs font-bold text-emerald-deep">-{Math.round((1 - p.price / p.original_price) * 100)}%</span>}
               </div>
               <div className="flex flex-1 flex-col p-3">
                 <h3 className="font-semibold leading-snug">{p.name}</h3>
                 {p.description && <p className="mt-1 line-clamp-2 text-sm text-ink/60">{p.description}</p>}
-                <div className="mt-2">
+                <div className="mt-auto pt-2">
                   {sale && <p className="text-sm text-ink/45 line-through">{rupiah(p.original_price)}</p>}
                   <p className="text-lg font-bold text-brand">{rupiah(p.price)}</p>
                 </div>

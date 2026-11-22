@@ -23,12 +23,12 @@ export default function CartDrawer({ wa }) {
   return (
     <>
       <button onClick={() => setOpen(true)} aria-label="Buka keranjang" className="relative rounded-full p-2 hover:bg-white/10">
-        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 7h12l-1 13H7L6 7z" /><path d="M9 7a3 3 0 0 1 6 0" /></svg>
+        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 4h2.2l2.1 9.6a1.5 1.5 0 0 0 1.5 1.2h7.9a1.5 1.5 0 0 0 1.5-1.1L20 7.5H6.1" /><circle cx="9.5" cy="19" r="1.3" /><circle cx="16.5" cy="19" r="1.3" /></svg>
         {count > 0 && <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-xs font-bold text-emerald-deep">{count}</span>}
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/50" onClick={() => setOpen(false)}>
+        <div className="fixed inset-0 z-[60] flex justify-end bg-black/50" onClick={() => setOpen(false)}>
           <aside onClick={(e) => e.stopPropagation()} className="flex h-full w-full max-w-sm flex-col bg-white text-ink">
             <div className="flex items-center justify-between border-b border-line p-4">
               <h2 className="font-heading text-2xl font-bold text-brand">Keranjang</h2>

@@ -185,6 +185,7 @@ function Settings() {
       {field("wa_template", "Template pesan WhatsApp", "Gunakan {produk}, {harga}, {jumlah}")}
       <ImageField label="Logo toko" value={s.logo_url} onChange={(u) => setS({ ...s, logo_url: u })} />
       <ImageField label="Foto utama (hero)" value={s.hero_image_url} onChange={(u) => setS({ ...s, hero_image_url: u })} />
+      {field("location_name", "Nama lokasi", "Contoh: Abu Aka Store, Pekanbaru")}
       {field("address", "Alamat toko", "Dipakai untuk peta Google Maps")}
       {field("open_hours", "Jam buka", "Contoh: Senin-Sabtu, 08.00-17.00")}
       {field("footer_text", "Teks footer")}

@@ -186,7 +186,13 @@ function Settings() {
       <ImageField label="Logo toko" value={s.logo_url} onChange={(u) => setS({ ...s, logo_url: u })} />
       <ImageField label="Foto utama (hero)" value={s.hero_image_url} onChange={(u) => setS({ ...s, hero_image_url: u })} />
       {field("location_name", "Nama lokasi", "Contoh: Abu Aka Store, Pekanbaru")}
-      {field("address", "Alamat toko", "Dipakai untuk peta Google Maps")}
+      {field("address", "Alamat jalan", "Nama jalan, nomor, RT/RW")}
+      {field("kelurahan", "Kelurahan / Desa")}
+      {field("kecamatan", "Kecamatan")}
+      {field("city", "Kota / Kabupaten")}
+      {field("province", "Provinsi")}
+      {field("postal_code", "Kode pos")}
+      {field("maps_url", "Link titik lokasi (Google Maps)", "Buka Google Maps, pilih lokasi, Bagikan, lalu Salin link")}
       {field("open_hours", "Jam buka", "Contoh: Senin-Sabtu, 08.00-17.00")}
       {field("footer_text", "Teks footer")}
       <div className="flex items-center gap-3"><button className={btn}>Simpan pengaturan</button><span className="text-sm text-ink/60">{msg}</span></div>

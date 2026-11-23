@@ -18,7 +18,11 @@ export default async function Home() {
     supabase.from("articles").select("*").order("created_at", { ascending: false }).limit(3),
   ]);
   const st = s || {};
-  const mapQ = encodeURIComponent(st.address || st.location_name || "");
+  const rows = [["Alamat", st.address], ["Kelurahan", st.kelurahan], ["Kecamatan", st.kecamatan], ["Kota/Kab.", st.city], ["Provinsi", st.province], ["Kode pos", st.postal_code], ["Jam buka", st.open_hours]].filter(([, v]) => v);
+  const full = [st.address, st.kelurahan, st.kecamatan, st.city, st.province, st.postal_code].filter(Boolean).join(", ") || st.location_name || "";
+  const mapQ = encodeURIComponent(full);
+  const mapsHref = st.maps_url || `https://www.google.com/maps/search/?api=1&query=${mapQ}`;
+  const hasLoc = rows.length > 0 || st.location_name;
 
   return (
     <main>
@@ -71,18 +75,24 @@ export default async function Home() {
         </section>
       )}
 
-      {(st.address || st.location_name) && (
+      {hasLoc && (
         <section id="lokasi" className="mx-auto max-w-6xl scroll-mt-28 px-5 py-12 md:py-16">
           <Title>Lokasi toko</Title>
           <div className="grid gap-6 md:grid-cols-2">
-            <div>
-              {st.location_name && <h3 className="font-heading text-2xl font-bold">{st.location_name}</h3>}
-              {st.address && <p className="mt-2 text-ink/80">{st.address}</p>}
-              {st.open_hours && <p className="mt-3 text-sm text-ink/70">Jam buka: {st.open_hours}</p>}
-              <a href={`https://www.google.com/maps/search/?api=1&query=${mapQ}`} target="_blank" rel="noopener noreferrer"
-                className="mt-5 inline-block rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white hover:bg-brand-dark">Buka di Google Maps</a>
+            <div className="rounded-xl border border-line bg-white p-5">
+              {st.location_name && <h3 className="font-heading text-2xl font-bold text-brand">{st.location_name}</h3>}
+              <dl className="mt-3 divide-y divide-line text-sm">
+                {rows.map(([k, v]) => (
+                  <div key={k} className="grid grid-cols-[6.5rem_1fr] gap-3 py-2.5">
+                    <dt className="text-ink/55">{k}</dt>
+                    <dd className="font-medium">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <a href={mapsHref} target="_blank" rel="noopener noreferrer"
+                className="mt-5 inline-block rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white hover:bg-brand-dark">Buka titik lokasi di Google Maps</a>
             </div>
-            <iframe title="Peta lokasi" loading="lazy" className="h-64 w-full rounded-xl border border-line md:h-72" src={`https://www.google.com/maps?q=${mapQ}&output=embed`} />
+            <iframe title="Peta lokasi" loading="lazy" className="h-64 w-full rounded-xl border border-line md:h-full md:min-h-72" src={`https://www.google.com/maps?q=${mapQ}&output=embed`} />
           </div>
         </section>
       )}

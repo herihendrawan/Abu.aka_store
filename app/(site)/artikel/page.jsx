@@ -6,8 +6,8 @@ export const metadata = { title: "Artikel dakwah" };
 export default async function Artikel() {
   const { data } = await supabase.from("articles").select("*").order("created_at", { ascending: false });
   return (
-    <main className="mx-auto max-w-6xl px-5 py-14">
-      <h1 className="mb-8 font-heading text-5xl font-bold text-brand">Artikel dakwah</h1>
+    <main className="mx-auto max-w-6xl px-5 py-10 md:py-14">
+      <h1 className="mb-6 font-heading text-3xl font-bold text-brand md:text-4xl">Artikel dakwah</h1>
       {(!data || data.length === 0) && <p className="text-ink/60">Belum ada artikel.</p>}
       <div className="grid gap-5 md:grid-cols-3">
         {(data || []).map((a) => (

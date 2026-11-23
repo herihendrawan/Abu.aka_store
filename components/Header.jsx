@@ -1,6 +1,6 @@
 import CartDrawer from "./CartDrawer";
 
-const links = [["Produk", "/#produk"], ["Artikel", "/artikel"], ["Lokasi", "/#lokasi"]];
+const links = [["Produk", "/#produk"], ["Artikel", "/artikel"], ["Lokasi", "/lokasi"]];
 
 export default function Header({ s }) {
   return (

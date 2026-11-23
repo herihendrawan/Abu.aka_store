@@ -14,7 +14,7 @@ export default function Footer({ s }) {
           <ul className="space-y-2.5">
             <li><a href="/#produk" className="hover:text-white">Produk</a></li>
             <li><a href="/artikel" className="hover:text-white">Artikel dakwah</a></li>
-            <li><a href="/#lokasi" className="hover:text-white">Lokasi</a></li>
+            <li><a href="/lokasi" className="hover:text-white">Lokasi</a></li>
           </ul>
         </div>
         <div className="text-sm">

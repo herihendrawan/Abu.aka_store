@@ -1,14 +1,8 @@
 import { supabase } from "@/lib/supabase";
 import Catalog from "@/components/Catalog";
+import SectionTitle from "@/components/SectionTitle";
 
 export const revalidate = 60;
-
-const Title = ({ children }) => (
-  <div className="mb-8">
-    <h2 className="font-heading text-3xl font-bold text-brand md:text-4xl">{children}</h2>
-    <span className="mt-2 block h-1 w-12 rounded bg-gold" />
-  </div>
-);
 
 export default async function Home() {
   const [{ data: s }, { data: categories }, { data: products }, { data: articles }] = await Promise.all([
@@ -18,32 +12,27 @@ export default async function Home() {
     supabase.from("articles").select("*").order("created_at", { ascending: false }).limit(3),
   ]);
   const st = s || {};
-  const rows = [["Alamat", st.address], ["Kelurahan", st.kelurahan], ["Kecamatan", st.kecamatan], ["Kota/Kab.", st.city], ["Provinsi", st.province], ["Kode pos", st.postal_code], ["Jam buka", st.open_hours]].filter(([, v]) => v);
-  const full = [st.address, st.kelurahan, st.kecamatan, st.city, st.province, st.postal_code].filter(Boolean).join(", ") || st.location_name || "";
-  const mapQ = encodeURIComponent(full);
-  const mapsHref = st.maps_url || `https://www.google.com/maps/search/?api=1&query=${mapQ}`;
-  const hasLoc = rows.length > 0 || st.location_name;
 
   return (
     <main>
       <section className="pola bg-emerald-deep text-white">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 md:grid-cols-2 md:gap-12 md:py-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-8 px-5 py-10 md:grid-cols-2 md:gap-12 md:py-16">
           <div>
-            <p lang="ar" className="font-heading text-2xl text-gold-soft/90">بسم الله الرحمن الرحيم</p>
-            <h1 className="mt-4 font-heading text-4xl font-bold leading-[1.15] md:text-6xl">{st.hero_title}</h1>
-            <p className="mt-4 max-w-md text-base text-white/80 md:text-lg">{st.hero_subtitle}</p>
+            <p lang="ar" className="font-heading text-xl text-gold-soft/90 md:text-2xl">بسم الله الرحمن الرحيم</p>
+            <h1 className="mt-3 font-heading text-4xl font-bold leading-[1.15] md:text-5xl">{st.hero_title}</h1>
+            <p className="mt-4 max-w-md text-base text-white/80">{st.hero_subtitle}</p>
             {st.location_name && (
-              <p className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-1 text-sm text-white/85">
+              <a href="/lokasi" className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-1 text-sm text-white/85 hover:border-gold">
                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
                 {st.location_name}
-              </p>
+              </a>
             )}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#produk" className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-emerald-deep hover:bg-gold-soft">Lihat produk</a>
-              <a href="/artikel" className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold hover:bg-white/10">Baca artikel</a>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a href="#produk" className="rounded-full bg-gold px-6 py-2.5 text-sm font-semibold text-emerald-deep hover:bg-gold-soft">Lihat produk</a>
+              <a href="/artikel" className="rounded-full border border-white/30 px-6 py-2.5 text-sm font-semibold hover:bg-white/10">Baca artikel</a>
             </div>
           </div>
-          <div className="mx-auto w-full max-w-[15rem] md:max-w-sm">
+          <div className="mx-auto w-full max-w-[14rem] md:max-w-xs">
             <div className="aspect-[3/4] overflow-hidden rounded-t-full border-[3px] border-gold/80 bg-brand shadow-2xl">
               {st.hero_image_url && <img src={st.hero_image_url} alt="" className="h-full w-full object-cover" />}
             </div>
@@ -51,48 +40,26 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="produk" className="mx-auto max-w-6xl scroll-mt-28 px-5 py-12 md:py-16">
-        <Title>Produk kami</Title>
+      <section id="produk" className="mx-auto max-w-6xl scroll-mt-28 px-5 py-10 md:py-14">
+        <SectionTitle>Produk kami</SectionTitle>
         <Catalog products={products || []} categories={categories || []} wa={st.whatsapp_number} template={st.wa_template} />
       </section>
 
       {articles?.length > 0 && (
-        <section className="bg-white py-12 md:py-16">
+        <section className="border-t border-line bg-white py-8">
           <div className="mx-auto max-w-6xl px-5">
-            <div className="flex items-end justify-between">
-              <Title>Artikel dakwah</Title>
-              <a href="/artikel" className="mb-8 text-sm font-semibold text-brand underline">Lihat semua</a>
+            <div className="mb-4 flex items-baseline justify-between">
+              <h2 className="font-heading text-xl font-bold text-brand">Artikel terbaru</h2>
+              <a href="/artikel" className="text-sm font-semibold text-brand underline">Lihat semua</a>
             </div>
-            <div className="grid gap-5 md:grid-cols-3">
+            <div className="grid gap-3 md:grid-cols-3">
               {articles.map((a) => (
-                <a key={a.id} href={`/artikel/${a.slug}`} className="overflow-hidden rounded-xl border border-line hover:border-gold">
-                  {a.cover_url && <img src={a.cover_url} alt="" loading="lazy" className="aspect-video w-full object-cover" />}
-                  <div className="p-4"><h3 className="font-heading text-xl font-bold">{a.title}</h3><p className="mt-1 line-clamp-2 text-sm text-ink/60">{a.excerpt}</p></div>
+                <a key={a.id} href={`/artikel/${a.slug}`} className="rounded-lg border border-line p-4 hover:border-gold">
+                  <h3 className="font-heading text-lg font-bold leading-snug">{a.title}</h3>
+                  {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-ink/60">{a.excerpt}</p>}
                 </a>
               ))}
             </div>
-          </div>
-        </section>
-      )}
-
-      {hasLoc && (
-        <section id="lokasi" className="mx-auto max-w-6xl scroll-mt-28 px-5 py-12 md:py-16">
-          <Title>Lokasi toko</Title>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-xl border border-line bg-white p-5">
-              {st.location_name && <h3 className="font-heading text-2xl font-bold text-brand">{st.location_name}</h3>}
-              <dl className="mt-3 divide-y divide-line text-sm">
-                {rows.map(([k, v]) => (
-                  <div key={k} className="grid grid-cols-[6.5rem_1fr] gap-3 py-2.5">
-                    <dt className="text-ink/55">{k}</dt>
-                    <dd className="font-medium">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-              <a href={mapsHref} target="_blank" rel="noopener noreferrer"
-                className="mt-5 inline-block rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white hover:bg-brand-dark">Buka titik lokasi di Google Maps</a>
-            </div>
-            <iframe title="Peta lokasi" loading="lazy" className="h-64 w-full rounded-xl border border-line md:h-full md:min-h-72" src={`https://www.google.com/maps?q=${mapQ}&output=embed`} />
           </div>
         </section>
       )}

@@ -3,7 +3,14 @@ import { useState } from "react";
 import { rupiah, waLink } from "@/lib/wa";
 import { useCart } from "./CartProvider";
 
-export default function Catalog({ products, categories, wa, template }) {
+const Truck = () => (
+  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 6h11v10H2zM13 9h4l4 4v3h-8" /><circle cx="7" cy="18" r="1.8" /><circle cx="17" cy="18" r="1.8" /></svg>
+);
+const Pin = () => (
+  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+);
+
+export default function Catalog({ products, categories, wa, template, shipping, area }) {
   const [cat, setCat] = useState("all");
   const { add, items } = useCart();
   const list = cat === "all" ? products : products.filter((p) => p.category_id === cat);
@@ -33,6 +40,12 @@ export default function Catalog({ products, categories, wa, template }) {
                 <div className="mt-auto pt-2">
                   {sale && <p className="text-sm text-ink/45 line-through">{rupiah(p.original_price)}</p>}
                   <p className="text-lg font-bold text-brand">{rupiah(p.price)}</p>
+                  {(shipping || area) && (
+                    <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs">
+                      {shipping && <span className="inline-flex items-center gap-1 font-medium text-brand"><Truck />{shipping}</span>}
+                      {area && <span className="inline-flex items-center gap-1 text-ink/60"><Pin />{area}</span>}
+                    </p>
+                  )}
                 </div>
                 {sold ? (
                   <span className="mt-3 rounded-md bg-line py-2 text-center text-sm font-semibold text-ink/50">Stok habis</span>

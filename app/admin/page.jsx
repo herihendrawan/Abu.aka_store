@@ -182,7 +182,9 @@ function Settings() {
       {field("whatsapp_number", "Nomor WhatsApp", "Format 62xxxxxxxxxx, tanpa + atau spasi")}
       {field("hero_title", "Judul utama")}
       {field("hero_subtitle", "Subjudul")}
-      {field("announcement", "Teks pengumuman (strip atas)", "Contoh: Gratis ongkir untuk semua produk. Kosongkan untuk menyembunyikan")}
+      {field("announcement", "Teks pengumuman (strip atas)", "Contoh: Gratis ongkir area Pekanbaru. Kosongkan untuk menyembunyikan")}
+      {field("shipping_label", "Label di kartu produk: ongkir", "Contoh: Gratis ongkir. Kosongkan untuk menyembunyikan")}
+      {field("delivery_area", "Label di kartu produk: area", "Contoh: Pekanbaru. Kosongkan untuk menyembunyikan")}
       {field("wa_template", "Template pesan WhatsApp", "Gunakan {produk}, {harga}, {jumlah}")}
       <ImageField label="Logo toko" value={s.logo_url} onChange={(u) => setS({ ...s, logo_url: u })} />
       <ImageField label="Foto utama (hero)" value={s.hero_image_url} onChange={(u) => setS({ ...s, hero_image_url: u })} />

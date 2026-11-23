@@ -42,7 +42,7 @@ export default async function Home() {
 
       <section id="produk" className="mx-auto max-w-6xl scroll-mt-28 px-5 py-10 md:py-14">
         <SectionTitle>Produk kami</SectionTitle>
-        <Catalog products={products || []} categories={categories || []} wa={st.whatsapp_number} template={st.wa_template} />
+        <Catalog products={products || []} categories={categories || []} wa={st.whatsapp_number} template={st.wa_template} shipping={st.shipping_label} area={st.delivery_area} />
       </section>
 
       {articles?.length > 0 && (

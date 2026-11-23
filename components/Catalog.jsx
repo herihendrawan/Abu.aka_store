@@ -30,12 +30,12 @@ export default function Catalog({ products, categories, wa, template, shipping, 
           const inCart = items.find((x) => x.id === p.id)?.qty;
           return (
             <article key={p.id} className="flex flex-col overflow-hidden rounded-xl border border-line bg-white">
-              <div className="relative aspect-square bg-white">
+              <a href={`/produk/${p.slug}`} className="relative block aspect-square bg-white">
                 {p.image_url && <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full object-cover" />}
                 {sale && <span className="absolute left-2 top-2 rounded bg-gold px-2 py-0.5 text-xs font-bold text-emerald-deep">-{Math.round((1 - p.price / p.original_price) * 100)}%</span>}
-              </div>
+              </a>
               <div className="flex flex-1 flex-col p-3">
-                <h3 className="font-semibold leading-snug">{p.name}</h3>
+                <a href={`/produk/${p.slug}`}><h3 className="font-semibold leading-snug hover:text-brand">{p.name}</h3></a>
                 {p.description && <p className="mt-1 line-clamp-2 text-sm text-ink/60">{p.description}</p>}
                 <div className="mt-auto pt-2">
                   {sale && <p className="text-sm text-ink/45 line-through">{rupiah(p.original_price)}</p>}

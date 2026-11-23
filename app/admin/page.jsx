@@ -46,7 +46,7 @@ function Panel() {
     <div className="mx-auto max-w-4xl px-5 py-8">
       <div className="mb-6 flex items-center justify-between">
         <nav className="flex gap-2">
-          {["produk", "artikel", "kategori", "pengaturan"].map((t) => (
+          {["produk", "artikel", "ulasan", "kategori", "pengaturan"].map((t) => (
             <button key={t} onClick={() => setTab(t)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize ${tab === t ? "bg-brand text-white" : "bg-white border border-line"}`}>{t}</button>
           ))}
@@ -55,6 +55,7 @@ function Panel() {
       </div>
       {tab === "produk" && <Products />}
       {tab === "artikel" && <Articles />}
+      {tab === "ulasan" && <Reviews />}
       {tab === "kategori" && <Categories />}
       {tab === "pengaturan" && <Settings />}
     </div>
@@ -182,7 +183,6 @@ function Settings() {
       {field("whatsapp_number", "Nomor WhatsApp", "Format 62xxxxxxxxxx, tanpa + atau spasi")}
       {field("hero_title", "Judul utama")}
       {field("hero_subtitle", "Subjudul")}
-      {field("announcement", "Teks pengumuman (strip atas)", "Contoh: Gratis ongkir area Pekanbaru. Kosongkan untuk menyembunyikan")}
       {field("shipping_label", "Label di kartu produk: ongkir", "Contoh: Gratis ongkir. Kosongkan untuk menyembunyikan")}
       {field("delivery_area", "Label di kartu produk: area", "Contoh: Pekanbaru. Kosongkan untuk menyembunyikan")}
       {field("wa_template", "Template pesan WhatsApp", "Gunakan {produk}, {harga}, {jumlah}")}
@@ -247,5 +247,32 @@ function Articles() {
         ))}
       </ul>
     </>
+  );
+}
+
+function Reviews() {
+  const [items, setItems] = useState([]);
+  const load = async () => setItems((await supabase.from("reviews").select("*, products(name)").order("created_at", { ascending: false })).data || []);
+  useEffect(() => { load(); }, []);
+  const set = async (r, ok) => { await supabase.from("reviews").update({ is_approved: ok }).eq("id", r.id); load(); };
+  const del = async (r) => { if (confirm("Hapus ulasan ini?")) { await supabase.from("reviews").delete().eq("id", r.id); load(); } };
+  return (
+    <ul className="divide-y divide-line rounded-lg border border-line bg-white">
+      {items.length === 0 && <li className="p-4 text-ink/60">Belum ada ulasan.</li>}
+      {items.map((r) => (
+        <li key={r.id} className="space-y-1 p-4">
+          <div className="flex items-center justify-between gap-2">
+            <p className="font-semibold">{r.author} · {"★".repeat(r.rating)}</p>
+            <span className={`text-xs ${r.is_approved ? "text-brand" : "text-amber-600"}`}>{r.is_approved ? "Tampil" : "Menunggu"}</span>
+          </div>
+          <p className="text-xs text-ink/50">{r.products?.name}</p>
+          <p className="text-sm">{r.comment}</p>
+          <div className="flex gap-3 text-sm">
+            <button className="underline" onClick={() => set(r, !r.is_approved)}>{r.is_approved ? "Sembunyikan" : "Setujui"}</button>
+            <button className="text-red-600 underline" onClick={() => del(r)}>Hapus</button>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 }
